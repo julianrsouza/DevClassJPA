@@ -99,6 +99,13 @@ public class Livro {
 	public void setNumeroEdicao( Integer numeroEdicao ) {
 		this.numeroEdicao = numeroEdicao;
 	}
+
+	@Override
+	public String toString() {
+		return "Livro [id=" + id + ", titulo=" + titulo + ", tituloOriginal=" + tituloOriginal + ", nomeAutor="
+				+ nomeAutor + ", editora=" + editora + ", numeroPaginas=" + numeroPaginas + ", numeroEdicao="
+				+ numeroEdicao + "]";
+	}
 	
 	
 }

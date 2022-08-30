@@ -1,12 +1,13 @@
 package business;
 
+import java.util.List;
 import java.util.Optional;
 
 import dao.ILivroDAO;
 import dao.LivroDAO;
 import entity.Livro;
-import exceptions.NeededInfoException;
 import exceptions.NotFoundException;
+import exceptions.RequiredInfoException;
 
 public class LivroBusiness {
 	
@@ -15,10 +16,10 @@ public class LivroBusiness {
 	public void save( String titulo, String tituloOriginal, 
 			String nomeAutor, String editora, Integer numeroPaginas, Integer numeroEdicao ) {
 		if( titulo == null ) {
-			new NeededInfoException( "Título é obrigatório" );
+			new RequiredInfoException( "Título é obrigatório" );
 		}
 		if( nomeAutor == null ) {
-			new NeededInfoException( "Nome do autor é obrigatório" );
+			new RequiredInfoException( "Nome do autor é obrigatório" );
 		}
 		Livro livro = new Livro();
 		livro.setTitulo( titulo );
@@ -52,8 +53,11 @@ public class LivroBusiness {
 				.orElseThrow( () -> new NotFoundException( "Livro não encontrado" ) );
 	}
 	
-	public Livro findByAuthor( String author ) throws NotFoundException {
-		return Optional.ofNullable( this.dao.findByAuthor( author ) ).get()
-				.orElseThrow( () -> new NotFoundException( "Livro não encontrado" ) );
+	public List< Livro > findByAuthor( String author ) throws NotFoundException {
+		List< Livro > livrosDoAutor = this.dao.findByAuthor( author );
+		if( livrosDoAutor.isEmpty() ) {
+			throw new NotFoundException( "Nenhum livro encontrado para este autor");
+		}
+		return livrosDoAutor;
 	}
 }
